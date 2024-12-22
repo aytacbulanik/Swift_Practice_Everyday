@@ -56,6 +56,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setupUI()
+        gestureControl()
     }
 
     private func setupUI() {
@@ -88,6 +89,14 @@ class ViewController: UIViewController {
         
         loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         registerButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
+    }
+    private func gestureControl() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(closeKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func closeKeyboard() {
+        view.endEditing(true)
     }
     
     @objc func loginButtonTapped() {
