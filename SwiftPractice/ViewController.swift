@@ -104,7 +104,12 @@ class ViewController: UIViewController {
     }
     
     @objc func registerButtonPressed() {
-        print("register button pressed")
+        let registerVC = RegisterViewController()
+        let navController = UINavigationController(rootViewController: registerVC)
+        navController.modalPresentationStyle = .fullScreen
+        present(navController, animated: true)
     }
+    
+    
 }
 

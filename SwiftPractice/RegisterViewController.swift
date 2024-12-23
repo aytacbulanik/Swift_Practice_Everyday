@@ -78,6 +78,9 @@ class RegisterViewController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .appBackGround
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Geri", style: .plain, target: self, action: #selector(dismissButtonPressed))
+        navigationController?.navigationBar.tintColor = .appGreen
         view.addSubview(nameSurnameTextField)
         view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
