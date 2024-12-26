@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseFirestore
 
 class RegisterViewController: UIViewController, UITextFieldDelegate {
     
@@ -71,7 +73,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
+    private var db = Firestore.firestore()
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -161,6 +163,34 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         if password.lowercased() != passwordAgain.lowercased() {
            showAlertController(title: "Hata", message: "Şifreler Aynı Değil")
            return
+        }
+        
+        Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
+            if let error {
+                self?.showAlertController(title: "Hata", message: error.localizedDescription)
+                return
+            }
+            
+            if let userId = result?.user.uid {
+                self?.db.collection(Constants.usersRef).document(userId).setData(
+                    [
+                    Constants.id : userId,
+                    Constants.nameSurname : nameSurname,
+                    Constants.email : email,
+                    Constants.createdDate : FieldValue.serverTimestamp(),
+                    Constants.connetions : [],
+                    Constants.pendingRequest : [],
+                    Constants.sendConnetions : []
+                    ])
+                   { error in
+                    self?.showAlertController(title: "Hata", message: "Kayıt oluşturulurken hata oluştu")
+                }
+                      
+            }
+            
+            self?.showAlertController(title: "Başarılı", message: "Kayıt oluşturuldu")
+            self?.dismiss(animated: true)
+                
         }
         
         
