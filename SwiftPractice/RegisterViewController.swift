@@ -167,12 +167,13 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
             if let error {
-                self?.showAlertController(title: "Hata", message: error.localizedDescription)
+                self?.showAlertController(title: "Kayıt Hatası", message: error.localizedDescription)
                 return
             }
             
-            if let userId = result?.user.uid {
-                self?.db.collection(Constants.usersRef).document(userId).setData(
+            guard let userId = result?.user.uid else {return}
+            
+            Firestore.firestore().collection(Constants.usersRef).document(userId).setData(
                     [
                     Constants.id : userId,
                     Constants.nameSurname : nameSurname,
@@ -186,10 +187,12 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
                     self?.showAlertController(title: "Hata", message: "Kayıt oluşturulurken hata oluştu")
                 }
                       
+            
+            
+            self?.showAlertController(title: "Başarılı", message: "Kayıt oluşturuldu") {
+                self?.dismiss(animated: true)
             }
             
-            self?.showAlertController(title: "Başarılı", message: "Kayıt oluşturuldu")
-            self?.dismiss(animated: true)
                 
         }
         
