@@ -112,7 +112,7 @@ class ViewController: UIViewController {
         
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] result , error  in
             if let error {
-                self?.showAlertController(title: "Hata", message: error.localizedDescription)
+                self?.showAlertController(title: "Hata", message: error.localizedFirebaseError)
                 
             }
         }
