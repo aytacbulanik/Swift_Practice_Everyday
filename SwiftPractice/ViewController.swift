@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class ViewController: UIViewController {
 
@@ -100,7 +101,22 @@ class ViewController: UIViewController {
     }
     
     @objc func loginButtonTapped() {
-        print("Login button tapped")
+        guard let email = emailTextField.text , email != "" else {
+            showAlertController(title: "Hata", message: "Lütfen geçerli bir e-mail adresi giriniz")
+            return
+        }
+        guard let password = passwordTextField.text , password != "" else {
+            showAlertController(title: "Hata", message: "Lütfen geçerli bir şifre giriniz")
+            return
+        }
+        
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] result , error  in
+            if let error {
+                self?.showAlertController(title: "Hata", message: error.localizedDescription)
+                
+            }
+        }
+        
     }
     
     @objc func registerButtonPressed() {
@@ -108,6 +124,14 @@ class ViewController: UIViewController {
         let navController = UINavigationController(rootViewController: registerVC)
         navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true)
+    }
+    
+    private func showAlertController(title : String , message : String , completion : (() -> Void)? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Tamam", style: .default){ _ in
+            completion?()
+        })
+        present(alert, animated: true)
     }
     
     
