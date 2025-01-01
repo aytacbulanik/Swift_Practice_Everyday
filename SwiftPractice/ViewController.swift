@@ -15,7 +15,7 @@ class ViewController: UIViewController {
         var textField = UITextField()
         textField.placeholder = "Email adresinizi giriniz..."
         textField.borderStyle = .roundedRect
-        textField.tintColor = .red
+        textField.autocapitalizationType = .none
         textField.keyboardType = .emailAddress
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -113,8 +113,13 @@ class ViewController: UIViewController {
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] result , error  in
             if let error {
                 self?.showAlertController(title: "Hata", message: error.localizedFirebaseError)
-                
+                return
             }
+            
+            let myListVC = MyShopingListViewController()
+            let navController = UINavigationController(rootViewController: myListVC)
+            navController.modalPresentationStyle = .fullScreen
+            self?.present(navController, animated: true)
         }
         
     }
