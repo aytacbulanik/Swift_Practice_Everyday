@@ -22,10 +22,11 @@ class MyShopingListViewController: UIViewController {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
         setupUI()
-        addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
+        
     }
     
     private func setupUI() {
+        view.backgroundColor = .appBackGround
         view.addSubview(addButton)
         NSLayoutConstraint.activate([
             addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -33,6 +34,8 @@ class MyShopingListViewController: UIViewController {
             addButton.heightAnchor.constraint(equalToConstant: 80),
             addButton.widthAnchor.constraint(equalToConstant: 80)
         ])
+        
+        addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
     }
     
     @objc func addButtonPressed() {

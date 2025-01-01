@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -14,13 +15,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
-        /*guard let windowScene = (scene as? UIWindowScene) else { return }
+        let currentUser = Auth.auth().currentUser
+        guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         
-        window.rootViewController = UINavigationController(rootViewController: ViewController())
+        if currentUser != nil {
+            window.rootViewController = UINavigationController(rootViewController: MyShopingListViewController())
+        } else {
+            window.rootViewController = UINavigationController(rootViewController: ViewController())
+        }
         
         self.window = window
-    */
+        window.makeKeyAndVisible()
          }
 
     func sceneDidDisconnect(_ scene: UIScene) {
